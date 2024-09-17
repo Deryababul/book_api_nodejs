@@ -70,6 +70,8 @@ describe('Book Controller', () => {
   });
 
   test('update a book', async () => {
+    db.query.mockResolvedValue({ affectedRows: 1 });
+
     const req = mockRequest({
       params: { id: 1 },
       body: {
@@ -84,10 +86,7 @@ describe('Book Controller', () => {
         json: jest.fn(),
       };
 
-    db.query.mockResolvedValue({ affectedRows: 1 });
-
     await updateBook(req, res);
-
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,

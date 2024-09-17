@@ -8,6 +8,7 @@ const getAllBooks = async (req, res) => {
     try {
         const sql ='SELECT * FROM books';
         const books = await db.query(sql);
+
         if(!books.length){
             return res.status(404).json({
                 success:false,
@@ -15,7 +16,7 @@ const getAllBooks = async (req, res) => {
             });
         }
 
-        return res.status(200).json({
+        res.status(200).json({
             success:true,
             message:'All book records',
             data: books[0]
@@ -36,7 +37,7 @@ const addBook = async(req,res) =>{
         if(!title || !author || !isbn || !price){
             return res.status(400).json({
                 success: false,
-                message: 'Please provide all fields'
+                message: 'Please provide all book details'
             });
         }
         const sql = `INSERT INTO books (title, author, isbn, price) VALUES (?, ?, ?, ?)`;
@@ -48,21 +49,21 @@ const addBook = async(req,res) =>{
                 message:'Error executing INSERT query'
             });
         }
-        return res.status(201).json({
+        res.status(201).json({
             success: true,
             message: 'Book added successfully',
         });
     } catch (error) {
-        console.error('Error creating book:', error.message);
         res.status(500).json({
             success: false,
-            message:'Error Creating Book',
+            message:'Server Error',
         });
     }
 }
 const getBookById = async(req,res) => {
     try {
         const bookId = req.params.id;
+
         if(!bookId){
             return res.status(400).json({
                 success:false,
@@ -71,6 +72,7 @@ const getBookById = async(req,res) => {
         }
         const sql = 'SELECT * FROM books WHERE id = ?';
         const [book] = await db.query(sql, [bookId]);
+
         if(book.length === 0){
             return res.status(404).json({
                 success: false,
@@ -85,10 +87,9 @@ const getBookById = async(req,res) => {
 
         
     } catch (error) {
-        console.error('Error fetching book by ID:', error.message);
         res.status(500).json({
             success:false,
-            message:'Error fetching book by ID',
+            message:'Server Error',
         });
     }
 }
@@ -96,12 +97,14 @@ const updateBook = async (req,res) => {
     try {
         const bookId = req.params.id;
         const { title, author, isbn, price} = req.body;
+
         if (!title || !author || !isbn || !price) {
             return res.status(400).json({
                 success: false,
                 message: 'Please provide all book details',
             });
         }
+
         if(!bookId){
             return res.status(400).json({
                 success: false,
@@ -109,13 +112,15 @@ const updateBook = async (req,res) => {
             });
         }
         const sql = `UPDATE books SET title = ?, author = ?, isbn = ?, price = ? WHERE id = ?`;
-        const book = await db.query(sql, [title, author, isbn, price, bookId]);
-        if (!book || book[0].affectedRows === 0) {
+        const [book] = await db.query(sql, [title, author, isbn, price, bookId]);
+        
+        if (!book || book.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
-                message: 'Book not found or no changes made',
+                message: 'Book not found',
             });
         }
+    
         res.status(200).json({
             success: true,
             message: 'Book updated successfully',
@@ -123,13 +128,14 @@ const updateBook = async (req,res) => {
     } catch (error) {
         res.status(500).json({
             success: false,
-            message: 'Error updating book',
+            message: 'Server Error',
         })
     }
 }
 const deleteBook = async (req,res) => {
     try {
         const bookId = req.params.id;
+
         if(!bookId){
             return res.status(400).json({
                 success: false,
@@ -137,8 +143,9 @@ const deleteBook = async (req,res) => {
             })
         }
         const sql = 'DELETE FROM books WHERE id = ?';
-        const book = await db.query(sql, [bookId]);
-        if (!book || book[0].affectedRows === 0) {
+        const [book] = await db.query(sql, [bookId]);
+
+        if (!book || book.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found',
@@ -149,10 +156,9 @@ const deleteBook = async (req,res) => {
             message:'Book Deleted Successfully'
         })
     } catch (error) {
-        // console.error('Error deleting book:', error.message);
         res.status(500).json({
             success:false,
-            message:'Error deleting book',
+            message:'Server Error',
         })
     }
 }
