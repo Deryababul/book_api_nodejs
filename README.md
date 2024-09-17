@@ -7,7 +7,7 @@ Bu proje, basit bir kitap mağazası için RESTful API sağlar. Kitapları liste
 - [Özellikler](#özellikler)
 - [Kurulum](#kurulum)
 - [Kullanım](#kullanım)
-- [API Endpoint'leri](#api-endpointleri)
+- [Testler](#testler)
 
 ## Özellikler
 
@@ -79,8 +79,12 @@ Bu proje, basit bir kitap mağazası için RESTful API sağlar. Kitapları liste
     - Kitap Güncelleme (PUT {{URL}}/{id})
     - Kitap Silme (DELETE {{URL}}/{id})
 
+## Testler
+1. **Test bağımlılıklarını yükleyin**
+    ```bash
+    npm install --save-dev jest
+    npm install mock-req-res --save-dev
 
-
-
-
-
+2. **Testleri çalıştırın**
+    ```bash
+    npm test

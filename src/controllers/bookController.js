@@ -48,13 +48,13 @@ const addBook = async(req,res) =>{
                 message:'Error executing INSERT query'
             });
         }
-        return res.status(201).send({
+        return res.status(201).json({
             success: true,
             message: 'Book added successfully',
         });
     } catch (error) {
         console.error('Error creating book:', error.message);
-        res.status(500).send({
+        res.status(500).json({
             success: false,
             message:'Error Creating Book',
         });
@@ -86,7 +86,7 @@ const getBookById = async(req,res) => {
         
     } catch (error) {
         console.error('Error fetching book by ID:', error.message);
-        res.status(500).send({
+        res.status(500).json({
             success:false,
             message:'Error fetching book by ID',
         });
@@ -109,9 +109,9 @@ const updateBook = async (req,res) => {
             });
         }
         const sql = `UPDATE books SET title = ?, author = ?, isbn = ?, price = ? WHERE id = ?`;
-        const [book] = await db.query(sql, [title, author, isbn, price, bookId]);
+        const book = await db.query(sql, [title, author, isbn, price, bookId]);
 
-        if (book.affectedRows === 0) {
+        if (!book.affectedRows) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found or no changes made',
@@ -122,8 +122,8 @@ const updateBook = async (req,res) => {
             message: 'Book updated successfully',
         });
     } catch (error) {
-        console.error('Error updating book:', error.message);  // Hata loglanabilir
-        res.status(500).send({
+        // console.error('Error updating book:', error.message);  // Hata loglanabilir
+        res.status(500).json({
             success: false,
             message: 'Error updating book',
         })
@@ -139,8 +139,8 @@ const deleteBook = async (req,res) => {
             })
         }
         const sql = 'DELETE FROM books WHERE id = ?';
-        const [book] = await db.query(sql, [bookId]);
-        if (book.affectedRows === 0) {
+        const book = await db.query(sql, [bookId]);
+        if (!book.affectedRows) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found',
@@ -148,11 +148,11 @@ const deleteBook = async (req,res) => {
         }
         res.status(200).json({
             success: true,
-            message:'Book Deleted Succesfully'
+            message:'Book Deleted Successfully'
         })
     } catch (error) {
-        console.error('Error deleting book:', error.message);
-        res.status(500).send({
+        // console.error('Error deleting book:', error.message);
+        res.status(500).json({
             success:false,
             message:'Error deleting book',
         })
