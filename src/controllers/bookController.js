@@ -113,8 +113,8 @@ const updateBook = async (req,res) => {
         }
         const sql = `UPDATE books SET title = ?, author = ?, isbn = ?, price = ? WHERE id = ?`;
         const [book] = await db.query(sql, [title, author, isbn, price, bookId]);
-        
-        if (!book || book.affectedRows === 0) {
+
+        if (book.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found',
@@ -145,7 +145,7 @@ const deleteBook = async (req,res) => {
         const sql = 'DELETE FROM books WHERE id = ?';
         const [book] = await db.query(sql, [bookId]);
 
-        if (!book || book.affectedRows === 0) {
+        if (book.affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found',

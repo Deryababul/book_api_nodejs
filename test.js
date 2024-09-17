@@ -70,7 +70,7 @@ describe('Book Controller', () => {
   });
 
   test('update a book', async () => {
-    db.query.mockResolvedValue({ affectedRows: 1 });
+    db.query.mockResolvedValue([{ affectedRows: 1 }]);
 
     const req = mockRequest({
       params: { id: 1 },
@@ -87,6 +87,7 @@ describe('Book Controller', () => {
       };
 
     await updateBook(req, res);
+
     expect(res.status).toHaveBeenCalledWith(200);
     expect(res.json).toHaveBeenCalledWith({
       success: true,
@@ -95,13 +96,13 @@ describe('Book Controller', () => {
   });
 
   test('delete a book', async () => {
+    db.query.mockResolvedValue([{ affectedRows: 1 }]);
+
     const req = mockRequest({ params: { id: 1 } });
     const res = {
         status: jest.fn().mockReturnThis(),
         json: jest.fn()
     };
-
-    db.query.mockResolvedValue({ affectedRows: 1 });
 
     await deleteBook(req, res);
 
