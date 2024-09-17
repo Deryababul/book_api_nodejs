@@ -4,19 +4,9 @@ Bu proje, basit bir kitap mağazası için RESTful API sağlar. Kitapları liste
 
 ## İçindekiler
 
-- [Özellikler](#özellikler)
 - [Kurulum](#kurulum)
 - [Kullanım](#kullanım)
 - [Testler](#testler)
-
-## Özellikler
-
-- **Kitap Listeleme**: Tüm kitapları listeleme.
-- **Kitap Detayı**: Belirli bir kitabın detaylarını getirme.
-- **Kitap Ekleme**: Yeni bir kitap ekleme.
-- **Kitap Güncelleme**: Mevcut bir kitabı güncelleme.
-- **Kitap Silme**: Bir kitabı silme.
-- **API Anahtarı Doğrulama**: API erişimini koruma.
 
 ## Kurulum
 
