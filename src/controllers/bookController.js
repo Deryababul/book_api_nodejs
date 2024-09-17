@@ -110,8 +110,7 @@ const updateBook = async (req,res) => {
         }
         const sql = `UPDATE books SET title = ?, author = ?, isbn = ?, price = ? WHERE id = ?`;
         const book = await db.query(sql, [title, author, isbn, price, bookId]);
-
-        if (!book.affectedRows) {
+        if (!book || book[0].affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found or no changes made',
@@ -122,7 +121,6 @@ const updateBook = async (req,res) => {
             message: 'Book updated successfully',
         });
     } catch (error) {
-        // console.error('Error updating book:', error.message);  // Hata loglanabilir
         res.status(500).json({
             success: false,
             message: 'Error updating book',
@@ -140,7 +138,7 @@ const deleteBook = async (req,res) => {
         }
         const sql = 'DELETE FROM books WHERE id = ?';
         const book = await db.query(sql, [bookId]);
-        if (!book.affectedRows) {
+        if (!book || book[0].affectedRows === 0) {
             return res.status(404).json({
                 success: false,
                 message: 'Book not found',

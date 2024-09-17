@@ -14,7 +14,7 @@ Bu proje, basit bir kitap mağazası için RESTful API sağlar. Kitapları liste
 
 - Node.js
 - MySQL
-- Web sunucusu (Apache, Nginx, vb.)
+- Web sunucusu (WampServer vb.)
 
 ### Adımlar
 
