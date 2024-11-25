@@ -4,7 +4,6 @@ const bookRouter = require("./src/routes/routes");
 const apiKey = require("./src/middleware/apiKey")
 const app = express()
 require("dotenv").config()
-//deneme123
 //routes
 app.use(express.json());
 app.use("/api/books",apiKey,bookRouter)
